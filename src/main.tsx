@@ -1,15 +1,23 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Home } from './views/Home';
+import './index.css'
+import { Layout } from './containers/Layout';
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <div>Hello world!</div>,
-  },
-  {
-    path: "/caca",
-    element: <div>cacona jeje</div>,
+   element: <Layout />,
+   children: [
+    {
+      path: "/",
+      element: <Home />,
+    },
+    {
+      path: "/caca",
+      element: <div>cacona jeje</div>,
+    },
+   ]
   },
 ]);
 
