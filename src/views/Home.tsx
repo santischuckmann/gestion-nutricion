@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { request } from "../libraries/axios-lib";
 import { useForm } from "../hooks/useForm";
-import { Input } from "../components/Input";
+import { Button, Typography } from "@mui/material";
+import { TextField } from "../components/TextField";
 
 
 interface Snack {
@@ -37,6 +38,7 @@ type Fields<T extends keyof Record<string, unknown>> = {
   name: T,
   placeholder: string,
   initialValue: string,
+  label: string
 }
 
 enum MainCourseType {
@@ -72,15 +74,15 @@ interface CreateDietaryPlanInsertionDto {
 }
 
 const fields: Fields<keyof HomeFields>[] = [
-  { name: "name", placeholder: "santiago", initialValue: 'vacio'},
-  { name: "surname", placeholder: "schuckmann", initialValue: 'vacio'},
-  { name: "observations", placeholder: "este paciente tiene esto y aquello", initialValue: 'vacio'},
-  { name: "breakfast", placeholder: "tostadas con mate cocido", initialValue: 'vacio'},
-  { name: "lunch", placeholder: "churrasco con ensalada", initialValue: 'vacio'},
-  { name: "lunchDessert", placeholder: "helado", initialValue: ''},
-  { name: "afternoonSnack", placeholder: "mate cocido con tostadas", initialValue: ''},
-  { name: "dinner", placeholder: "empanadas", initialValue: 'vacio'},
-  { name: "dinnerDessert", placeholder: "yogurt", initialValue: ''},
+  { name: "name", placeholder: "santiago", initialValue: 'vacio', label: 'Nombre'},
+  { name: "surname", placeholder: "schuckmann", initialValue: 'vacio', label: 'Apellido'},
+  { name: "observations", placeholder: "este paciente tiene esto y aquello", initialValue: 'vacio', label: 'Observaciones'},
+  { name: "breakfast", placeholder: "tostadas con mate cocido", initialValue: 'vacio', label: 'Desayuno'},
+  { name: "lunch", placeholder: "churrasco con ensalada", initialValue: 'vacio', label: 'Almuerzo'},
+  { name: "lunchDessert", placeholder: "helado", initialValue: '', label: 'Postre de almuerzo'},
+  { name: "afternoonSnack", placeholder: "mate cocido con tostadas", initialValue: '', label: 'Merienda'},
+  { name: "dinner", placeholder: "empanadas", initialValue: 'vacio', label: 'Cena'},
+  { name: "dinnerDessert", placeholder: "yogurt", initialValue: '', label: 'Postre de cena'},
 ]
 
 const parseFormToRequest = ({
@@ -111,7 +113,7 @@ const parseFormToRequest = ({
 }
 
 export const Home = () => {
-  const { register, handleSubmit } = useForm({
+  const { handleSubmit, control } = useForm({
     defaultValues
   })
   
@@ -136,9 +138,9 @@ export const Home = () => {
         snacks.map((snack) => {
           return (
             <div className="text-slate-500 flex flex-row gap-1">
-              <p>
+              <Typography variant="h4">
                 {snack.food}
-              </p>
+              </Typography>
               <p>
                 {snack.intakeHour}
               </p>
@@ -148,9 +150,9 @@ export const Home = () => {
       )}
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-3 gap-2 m-4">
         {fields.map((field) => (
-          <Input key={field.name} registration={() => register(field.name)} placeholder={field.placeholder} />
+          <TextField {...field} control={control}/>
         ))}
-        <button className="col-start-2"type='submit'>enviar</button>
+        <Button variant="outlined" className="col-start-2 border border-blue-300"type='submit'>enviar</Button>
       </form>
     </div>
   )
