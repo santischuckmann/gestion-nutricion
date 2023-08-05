@@ -1,26 +1,27 @@
-import axios, { AxiosRequestConfig, Method } from "axios"
+import axios, { AxiosRequestConfig, Method } from 'axios'
 
-const axiosInstance = axios.create({
-  baseURL: 'https://localhost:44341/api/',
+export const axiosInstance = axios.create({
+  baseURL: 'https://localhost:7247/api/',
 })
 
-interface Request {
+interface Request<T extends Method | undefined> {
   url: string
-  method?: Method
-  data?: unknown
+  method?: T
+  data?: T extends 'get' ? undefined : Record<string, unknown>
 }
 
-export const request = async ({
+export const request = async<T extends Method | undefined>({
   url,
   method = 'get',
   data
-}: Request) => {
+}: Request<T>) => {
   try {
     const config: AxiosRequestConfig = {
-       method,
-       headers: {
-          'Content-type': 'application/json',
-        },
+      method,
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
     }
   
     if (method !== 'get') config.data = data
