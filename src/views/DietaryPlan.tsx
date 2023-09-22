@@ -1,7 +1,8 @@
 import { request } from '../libraries/axios-lib'
 import { useForm } from '../hooks/useForm'
-import { Box, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, Typography } from '@mui/material'
 import { TextField } from '../components/TextField'
+import { useState } from 'react'
 
 type HomeFields = {
   name: string,
@@ -57,7 +58,7 @@ interface PlanSnackInsertionDto {
   idSnackTime: SnackTime
 }
 
-interface CreateDietaryPlanInsertionDto {
+interface CreateDietaryPlanInsertionDto extends Record<string, unknown> {
   observations: string
   name: string
   surname: string
@@ -85,7 +86,7 @@ const parseFormToRequest = ({
   ...data
 }: HomeFields): CreateDietaryPlanInsertionDto => {
   return {
-    observations: data.observations,
+    observations: data.observations || 'Plan sin observaciones',
     name: data.name,
     breakfast: data.breakfast,
     surname: data.surname,
@@ -106,42 +107,73 @@ const parseFormToRequest = ({
 }
 
 export const DietaryPlan = () => {
-  const { handleSubmit, control } = useForm({
+  const [ loading, setLoading ] = useState(false)
+  const [ justCreated, setJustCreated ] = useState(false)
+  const { handleSubmit, control, watch, reset } = useForm({
     defaultValues
   })
 
   const onSubmit = async (data: HomeFields) => {
-    await request({ method: 'POST', url: 'DietaryPlan', data: parseFormToRequest(data) })
+    try {
+      setLoading(true)
+      const response =  await request({ method: 'POST', url: 'DietaryPlan', data: parseFormToRequest(data) })
+  
+      setLoading(false)
+  
+      if (response.id) {
+        setJustCreated(true)
+      }
+    } catch (error: any){
+      console.error(error)
+    }
+  }
+
+  const handleRestart = () => {
+    setJustCreated(false)
+    reset()
   }
 
   return (
     <div className="flex flex-col gap-2 p-4 items-center">
       <Typography variant='h4'>Crea un plan diario para tu paciente</Typography>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
-        <Box className='flex flex-col gap-2'>
-          <Typography>Informacion del paciente:</Typography>
-          <Box className='flex gap-2'>
-            <TextField control={control} {...fields.name} InputLabelProps={{ shrink: true }} />
-            <TextField control={control} {...fields.surname} InputLabelProps={{ shrink: true }} />
+      {!justCreated ? (
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
+          <Box className='flex flex-col gap-2'>
+            <Typography>Informacion del paciente:</Typography>
+            <Box className='flex gap-2'>
+              <TextField control={control} {...fields.name} InputLabelProps={{ shrink: true }} />
+              <TextField control={control} {...fields.surname} InputLabelProps={{ shrink: true }} />
+            </Box>
           </Box>
-        </Box>
-        <TextField control={control} {...fields.breakfast} />
-        <Box className='flex flex-col gap-2'>
-          <Typography>Almuerzo:</Typography>
-          <Box className='flex gap-2'>
-            <TextField control={control} {...fields.lunch} InputLabelProps={{ shrink: true }} />
-            <TextField control={control} {...fields.lunchDessert} InputLabelProps={{ shrink: true }} />
+          <TextField control={control} {...fields.breakfast} />
+          <Box className='flex flex-col gap-2'>
+            <Typography>Almuerzo:</Typography>
+            <Box className='flex gap-2'>
+              <TextField control={control} {...fields.lunch} InputLabelProps={{ shrink: true }} />
+              <TextField control={control} {...fields.lunchDessert} InputLabelProps={{ shrink: true }} />
+            </Box>
           </Box>
-        </Box>
-        <TextField control={control} {...fields.afternoonSnack} />
-        <Box className='flex flex-col gap-2'>
-          <Typography>Cena:</Typography>
-          <Box className='flex gap-2'>
-            <TextField control={control} {...fields.dinner} InputLabelProps={{ shrink: true }} />
-            <TextField control={control} {...fields.dinnerDessert} InputLabelProps={{ shrink: true }} />
+          <TextField control={control} {...fields.afternoonSnack} />
+          <Box className='flex flex-col gap-2'>
+            <Typography>Cena:</Typography>
+            <Box className='flex gap-2'>
+              <TextField control={control} {...fields.dinner} InputLabelProps={{ shrink: true }} />
+              <TextField control={control} {...fields.dinnerDessert} InputLabelProps={{ shrink: true }} />
+            </Box>
           </Box>
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            <Button type='submit'>Enviar</Button>
+          )}
+        </form>
+      ): (
+        <Box className="flex flex-col gap-4 items-center">
+          <Typography>Acabas de crear un plan nutricional para {watch('name')} {watch('surname')}</Typography>
+          <Typography>Queres crear otro?</Typography>
+          <Button variant='outlined' onClick={handleRestart}>Creemos otro</Button>
         </Box>
-      </form>
+      )}
     </div>
   )
 }

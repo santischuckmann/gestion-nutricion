@@ -1,4 +1,4 @@
-import { Button, Typography } from '@mui/material'
+import { Button, Link, Typography } from '@mui/material'
 
 export const Home = () => {
   return (
@@ -7,7 +7,7 @@ export const Home = () => {
       <Typography variant='h6'>Crea planes personalizados, anota las medidas antropometricas de tus pacientes y
         recibi datos analiticos sobre su progreso!
       </Typography>
-      <Button variant='outlined'>Crea tu primer plan nutricional</Button>
+      <Link href='/dietaryPlan'>Crea tu primer plan nutricional</Link>
     </div>
   )
 }
