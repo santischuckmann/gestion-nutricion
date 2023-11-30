@@ -2,7 +2,7 @@ import { AppBar, Box, CssBaseline, Divider, Drawer, Link, Toolbar, Typography } 
 import { Outlet, useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { request } from '../libraries/axios-lib'
-import { User } from '../interfaces'
+import { User } from '../shared'
 
 const drawerWidth = 200
 

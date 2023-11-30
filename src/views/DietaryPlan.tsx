@@ -1,9 +1,16 @@
-import { request } from '../libraries/axios-lib'
 import { useForm } from '../hooks/useForm'
 import { Box, Button, CircularProgress, Typography } from '@mui/material'
 import { TextField } from '../components/TextField'
 import { useState } from 'react'
 import { useMutate } from '../hooks'
+import { CreateDietaryPlanInsertionDto, SnackTime, MainCourseType } from '../shared'
+
+type Fields<T extends keyof Record<string, unknown>> = {
+  name: T,
+  placeholder: string,
+  initialValue: string,
+  label: string
+}
 
 type HomeFields = {
   name: string,
@@ -27,45 +34,6 @@ const defaultValues: HomeFields = {
   lunchDessert: '',
   dinnerDessert: '',
   afternoonSnack: ''
-}
-
-type Fields<T extends keyof Record<string, unknown>> = {
-  name: T,
-  placeholder: string,
-  initialValue: string,
-  label: string
-}
-
-enum MainCourseType {
-  Lunch = 1,
-  Dinner = 2
-}
-
-enum SnackTime {
-  BreakfastAndLunch = 1,
-  AfternoonSnack = 2,
-  BeforeDinner = 3,
-  ExactTime = 4,
-}
-
-interface MainCourseInsertionDto {
-  idMainCourseType: MainCourseType
-  food: string
-  dessert: string
-}
-
-interface PlanSnackInsertionDto {
-  food: string
-  idSnackTime: SnackTime
-}
-
-interface CreateDietaryPlanInsertionDto extends Record<string, unknown> {
-  observations: string
-  name: string
-  surname: string
-  breakfast: string
-  mainCourses: MainCourseInsertionDto[]
-  planSnacks: PlanSnackInsertionDto[]
 }
 
 const fields: Record<keyof HomeFields, Fields<keyof HomeFields>> = {
