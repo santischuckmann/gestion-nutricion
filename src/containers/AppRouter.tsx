@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { Layout } from './Layout'
 import { Home } from '../views/Home'
 import { DietaryPlan } from '../views/DietaryPlan'
+import { DietaryPlans } from '../views/DietaryPlans'
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
       {
         path: '/dietaryPlan',
         element: <DietaryPlan />
+      },
+      {
+        path: '/dietaryPlans',
+        element: <DietaryPlans />
       },
       {
         path: '/caca',

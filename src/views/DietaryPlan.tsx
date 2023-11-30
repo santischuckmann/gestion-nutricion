@@ -3,6 +3,7 @@ import { useForm } from '../hooks/useForm'
 import { Box, Button, CircularProgress, Typography } from '@mui/material'
 import { TextField } from '../components/TextField'
 import { useState } from 'react'
+import { useMutate } from '../hooks'
 
 type HomeFields = {
   name: string,
@@ -107,7 +108,7 @@ const parseFormToRequest = ({
 }
 
 export const DietaryPlan = () => {
-  const [ loading, setLoading ] = useState(false)
+  const createDietaryPlan = useMutate<{ id: number}>()
   const [ justCreated, setJustCreated ] = useState(false)
   const { handleSubmit, control, watch, reset } = useForm({
     defaultValues
@@ -115,12 +116,9 @@ export const DietaryPlan = () => {
 
   const onSubmit = async (data: HomeFields) => {
     try {
-      setLoading(true)
-      const response =  await request({ method: 'POST', url: 'DietaryPlan', data: parseFormToRequest(data) })
-  
-      setLoading(false)
-  
-      if (response.id) {
+      await createDietaryPlan.mutate({ endpoint: 'DietaryPlan', data: parseFormToRequest(data) })
+
+      if (createDietaryPlan.data != null && createDietaryPlan.data.id) {
         setJustCreated(true)
       }
     } catch (error: any){
@@ -161,7 +159,7 @@ export const DietaryPlan = () => {
               <TextField control={control} {...fields.dinnerDessert} InputLabelProps={{ shrink: true }} />
             </Box>
           </Box>
-          {loading ? (
+          {createDietaryPlan.loading ? (
             <CircularProgress />
           ) : (
             <Button type='submit'>Enviar</Button>

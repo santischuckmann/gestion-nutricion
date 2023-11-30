@@ -5,13 +5,13 @@ export const axiosInstance = axios.create({
 })
 
 interface Request<T extends Method | undefined> {
-  url: string
+  endpoint: string
   method?: T
   data?: T extends 'get' ? undefined : Record<string, unknown>
 }
 
 export const request = async<T extends Method | undefined>({
-  url,
+  endpoint,
   method = 'get',
   data
 }: Request<T>) => {
@@ -26,7 +26,7 @@ export const request = async<T extends Method | undefined>({
   
     if (method !== 'get') config.data = data
   
-    const response = await axiosInstance(url, config)
+    const response = await axiosInstance(endpoint, config)
   
     return response.data
   } catch (error){

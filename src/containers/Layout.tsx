@@ -27,7 +27,7 @@ export const Layout = () => {
 
       if (token) {
         const user: User = await request({ 
-          url: 'User/AuthenticatedUser',
+          endpoint: 'User/AuthenticatedUser',
           method: 'get' 
         })
 
@@ -68,6 +68,8 @@ export const Layout = () => {
           <p>hola {user?.fullName ?? ''}</p>
           <Divider variant='middle' className='m-4'/>
           <Link href='/dietaryPlan'>Plan Nutricional</Link>
+          <Divider variant='middle' className='m-4'/>
+          <Link href='/dietaryPlans'>Planes creados</Link>
         </Box>
       </Drawer>
       <Box
