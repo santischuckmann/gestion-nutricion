@@ -83,15 +83,10 @@ export const DietaryPlan = () => {
   })
 
   const onSubmit = async (data: HomeFields) => {
-    try {
-      await createDietaryPlan.mutate({ endpoint: 'DietaryPlan', data: parseFormToRequest(data) })
+    await createDietaryPlan.mutate({ endpoint: 'DietaryPlan', data: parseFormToRequest(data) })
 
-      if (createDietaryPlan.data != null && createDietaryPlan.data.id) {
-        setJustCreated(true)
-      }
-    } catch (error: any){
-      console.error(error)
-    }
+    if (!createDietaryPlan.error)
+      setJustCreated(true)
   }
 
   const handleRestart = () => {
@@ -135,8 +130,18 @@ export const DietaryPlan = () => {
         </form>
       ): (
         <Box className="flex flex-col gap-4 items-center">
-          <Typography>Acabas de crear un plan nutricional para {watch('name')} {watch('surname')}</Typography>
-          <Typography>Queres crear otro?</Typography>
+          {justCreated && (
+            <>
+              <Typography>Acabas de crear un plan nutricional para {watch('name')} {watch('surname')}</Typography>
+              <Typography>Queres crear otro?</Typography>
+            </>
+          )}
+          {!justCreated && createDietaryPlan.error && (
+            <>
+              <Typography>Hubo un error al crear un plan nutricional para {watch('name')} {watch('surname')}</Typography>
+              <Typography>Queres intentar de nuevo?</Typography>
+            </>
+          )}
           <Button variant='outlined' onClick={handleRestart}>Creemos otro</Button>
         </Box>
       )}
