@@ -39,3 +39,10 @@ export interface DietaryPlanDto {
   mainCourses: MainCourseInsertionDto[]
   planSnacks: PlanSnackInsertionDto[]
 }
+
+export type Fields<T extends keyof Record<string, unknown>> = {
+  name: T,
+  placeholder: string,
+  initialValue: string,
+  label: string
+}

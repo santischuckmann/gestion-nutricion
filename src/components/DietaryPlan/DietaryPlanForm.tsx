@@ -1,21 +1,24 @@
-import { Box, Button, CircularProgress, TextField, Typography } from '@mui/material'
-import { Control, FieldValues, UseFormHandleSubmit } from 'react-hook-form'
+import { Box, Button, CircularProgress, Typography } from '@mui/material'
+import { TextField } from '../TextField'
+import { Control, FieldValues } from 'react-hook-form'
+import { HomeFields } from '../../views/DietaryPlan'
+import { Fields } from '../../shared'
 
-interface DietaryPlanFormProps<T extends FieldValues> {
-  control: Control<T>
-  fields: T
+interface DietaryPlanFormProps {
+  control: Control<HomeFields, any>
+  fields: Record<keyof HomeFields, Fields<keyof HomeFields>>
   loading: boolean
   confirmActionText: string
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>
 }
 
-export const DietaryPlanForm = <T extends FieldValues>({
+export const DietaryPlanForm = ({
   control,
   fields,
   loading,
   confirmActionText,
   onSubmit
-}: DietaryPlanFormProps<T>) => {
+}: DietaryPlanFormProps) => {
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-8">
       <Box className='flex flex-col gap-2'>

@@ -3,16 +3,10 @@ import { Box, Button, CircularProgress, Typography } from '@mui/material'
 import { TextField } from '../components/TextField'
 import { useState } from 'react'
 import { useMutate } from '../hooks'
-import { CreateDietaryPlanInsertionDto, SnackTime, MainCourseType } from '../shared'
+import { CreateDietaryPlanInsertionDto, SnackTime, MainCourseType, Fields } from '../shared'
+import { DietaryPlanForm } from '../components/DietaryPlan/DietaryPlanForm'
 
-type Fields<T extends keyof Record<string, unknown>> = {
-  name: T,
-  placeholder: string,
-  initialValue: string,
-  label: string
-}
-
-type HomeFields = {
+export type HomeFields = {
   name: string,
   surname: string,
   observations: string,
@@ -98,36 +92,12 @@ export const DietaryPlan = () => {
     <div className="flex flex-col gap-2 p-4 items-center">
       <Typography variant='h4'>Crea un plan diario para tu paciente</Typography>
       {!justCreated ? (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
-          <Box className='flex flex-col gap-2'>
-            <Typography>Informacion del paciente:</Typography>
-            <Box className='flex gap-2'>
-              <TextField control={control} {...fields.name} InputLabelProps={{ shrink: true }} />
-              <TextField control={control} {...fields.surname} InputLabelProps={{ shrink: true }} />
-            </Box>
-          </Box>
-          <TextField control={control} {...fields.breakfast} />
-          <Box className='flex flex-col gap-2'>
-            <Typography>Almuerzo:</Typography>
-            <Box className='flex gap-2'>
-              <TextField control={control} {...fields.lunch} InputLabelProps={{ shrink: true }} />
-              <TextField control={control} {...fields.lunchDessert} InputLabelProps={{ shrink: true }} />
-            </Box>
-          </Box>
-          <TextField control={control} {...fields.afternoonSnack} />
-          <Box className='flex flex-col gap-2'>
-            <Typography>Cena:</Typography>
-            <Box className='flex gap-2'>
-              <TextField control={control} {...fields.dinner} InputLabelProps={{ shrink: true }} />
-              <TextField control={control} {...fields.dinnerDessert} InputLabelProps={{ shrink: true }} />
-            </Box>
-          </Box>
-          {createDietaryPlan.loading ? (
-            <CircularProgress />
-          ) : (
-            <Button type='submit'>Enviar</Button>
-          )}
-        </form>
+        <DietaryPlanForm
+          control={control}
+          fields={fields}
+          onSubmit={handleSubmit(onSubmit)}
+          loading={createDietaryPlan.loading}
+          confirmActionText='Enviar' />
       ): (
         <Box className="flex flex-col gap-4 items-center">
           {justCreated && (
