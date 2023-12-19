@@ -1,15 +1,14 @@
 import { Box, Button, CircularProgress, Typography } from '@mui/material'
 import { TextField } from '../TextField'
 import { Control, FieldValues } from 'react-hook-form'
-import { HomeFields } from '../../views/DietaryPlan'
-import { Fields } from '../../shared'
+import { Fields, HomeFields } from '../../shared'
 
 interface DietaryPlanFormProps {
   control: Control<HomeFields, any>
-  fields: Record<keyof HomeFields, Fields<keyof HomeFields>>
   loading: boolean
   confirmActionText: string
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>
+  fields: Record<keyof HomeFields, Fields<keyof HomeFields>>
 }
 
 export const DietaryPlanForm = ({

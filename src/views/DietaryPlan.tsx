@@ -1,46 +1,9 @@
 import { useForm } from '../hooks/useForm'
-import { Box, Button, CircularProgress, Typography } from '@mui/material'
-import { TextField } from '../components/TextField'
+import { Box, Button, Typography } from '@mui/material'
 import { useState } from 'react'
 import { useMutate } from '../hooks'
-import { CreateDietaryPlanInsertionDto, SnackTime, MainCourseType, Fields } from '../shared'
+import { CreateDietaryPlanInsertionDto, SnackTime, MainCourseType, exampleFields, HomeFields, defaultValues } from '../shared'
 import { DietaryPlanForm } from '../components/DietaryPlan/DietaryPlanForm'
-
-export type HomeFields = {
-  name: string,
-  surname: string,
-  observations: string,
-  breakfast: string,
-  lunch: string,
-  dinner: string,
-  lunchDessert: '',
-  dinnerDessert: '',
-  afternoonSnack: ''
-}
-
-const defaultValues: HomeFields = {
-  name: '',
-  surname: '', 
-  observations: '',
-  breakfast: '',
-  lunch: '',
-  dinner: '',
-  lunchDessert: '',
-  dinnerDessert: '',
-  afternoonSnack: ''
-}
-
-const fields: Record<keyof HomeFields, Fields<keyof HomeFields>> = {
-  name: { name: 'name', placeholder: 'santiago', initialValue: 'vacio', label: 'Nombre' }, 
-  surname: { name: 'surname', placeholder: 'schuckmann', initialValue: 'vacio', label: 'Apellido' }, 
-  observations: { name: 'observations', placeholder: 'este paciente tiene esto y aquello', initialValue: 'vacio', label: 'Observaciones' }, 
-  breakfast: { name: 'breakfast', placeholder: 'tostadas con mate cocido', initialValue: 'vacio', label: 'Desayuno' }, 
-  lunch: { name: 'lunch', placeholder: 'churrasco con ensalada', initialValue: 'vacio', label: 'Almuerzo' }, 
-  lunchDessert: { name: 'lunchDessert', placeholder: 'helado', initialValue: '', label: 'Postre de almuerzo' }, 
-  afternoonSnack: { name: 'afternoonSnack', placeholder: 'mate cocido con tostadas', initialValue: '', label: 'Merienda' }, 
-  dinner: { name: 'dinner', placeholder: 'empanadas', initialValue: 'vacio', label: 'Cena' }, 
-  dinnerDessert: { name: 'dinnerDessert', placeholder: 'yogurt', initialValue: '', label: 'Postre de cena' }, 
-}
 
 const parseFormToRequest = ({
   dinner,
@@ -77,7 +40,11 @@ export const DietaryPlan = () => {
   })
 
   const onSubmit = async (data: HomeFields) => {
-    await createDietaryPlan.mutate({ endpoint: 'DietaryPlan', data: parseFormToRequest(data) })
+    await createDietaryPlan.mutate({ 
+      endpoint: 'DietaryPlan', 
+      method: 'POST',
+      data: parseFormToRequest(data) 
+    })
 
     if (!createDietaryPlan.error)
       setJustCreated(true)
@@ -94,7 +61,7 @@ export const DietaryPlan = () => {
       {!justCreated ? (
         <DietaryPlanForm
           control={control}
-          fields={fields}
+          fields={exampleFields}
           onSubmit={handleSubmit(onSubmit)}
           loading={createDietaryPlan.loading}
           confirmActionText='Enviar' />
