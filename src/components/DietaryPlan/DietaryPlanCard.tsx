@@ -1,4 +1,4 @@
-import { DietaryPlanDto, MainCourseType, SnackTime } from '../shared'
+import { DietaryPlanDto, MainCourseType, SnackTime } from '../../shared'
 
 export const DietaryPlanCard = ({
   dietaryPlan,
@@ -27,9 +27,10 @@ export const DietaryPlanCard = ({
       {snacksBySnackTime[SnackTime.BreakfastAndLunch]}
       <span>Almuerzo: {mainCourseByMainCourseType[MainCourseType.Lunch].food}</span>
       <span>Postre: {mainCourseByMainCourseType[MainCourseType.Lunch].dessert}</span>
+      <span>Merienda: {snacksBySnackTime[SnackTime.AfternoonSnack]}</span>
       <span>Cena: {mainCourseByMainCourseType[MainCourseType.Dinner].food}</span>
       <span>Postre: {mainCourseByMainCourseType[MainCourseType.Dinner].dessert}</span>
-      <button onClick={() => onEdit(dietaryPlan.id)}>Editar</button>
+      <button onClick={() => onEdit(dietaryPlan.dietaryPlanId)}>Editar</button>
     </div>
   )
 }

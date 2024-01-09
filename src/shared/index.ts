@@ -31,7 +31,7 @@ interface PlanSnackInsertionDto {
 export type CreateDietaryPlanInsertionDto = Omit<DietaryPlanDto, 'id'>
 
 export interface DietaryPlanDto extends Record<string, unknown> {
-  id: number
+  dietaryPlanId: number
   observations: string
   name: string
   surname: string
@@ -81,4 +81,14 @@ export const exampleFields: Record<keyof HomeFields, Fields<keyof HomeFields>> =
   afternoonSnack: { name: 'afternoonSnack', placeholder: 'mate cocido con tostadas', initialValue: '', label: 'Merienda' }, 
   dinner: { name: 'dinner', placeholder: 'empanadas', initialValue: 'vacio', label: 'Cena' }, 
   dinnerDessert: { name: 'dinnerDessert', placeholder: 'yogurt', initialValue: '', label: 'Postre de cena' }, 
+}
+
+export interface PatientDto {
+   patientId: number
+   name: string
+   surname: string
+   firstAppointmentDate: Date
+   lastAppointmentDate: Date
+   isActive: boolean
+   dietaryPlanCount: number
 }

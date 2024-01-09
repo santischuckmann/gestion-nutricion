@@ -70,6 +70,8 @@ export const Layout = () => {
           <Link href='/dietaryPlan'>Plan Nutricional</Link>
           <Divider variant='middle' className='m-4'/>
           <Link href='/dietaryPlans'>Planes creados</Link>
+          <Divider variant='middle' className='m-4'/>
+          <Link href='/patients'>Pacientes</Link>
         </Box>
       </Drawer>
       <Box

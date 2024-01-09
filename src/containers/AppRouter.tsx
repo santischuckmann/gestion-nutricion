@@ -3,6 +3,8 @@ import { Layout } from './Layout'
 import { Home } from '../views/Home'
 import { DietaryPlan } from '../views/DietaryPlan'
 import { DietaryPlans } from '../views/DietaryPlans'
+import { Patients } from '../views/Patients'
+import { PatientDetail } from '../views/PatientDetail'
 
 const router = createBrowserRouter([
   {
@@ -19,6 +21,14 @@ const router = createBrowserRouter([
       {
         path: '/dietaryPlans',
         element: <DietaryPlans />
+      },
+      {
+        path: '/patients',
+        element: <Patients />
+      },
+      {
+        path: '/patient/:patientId',
+        element: <PatientDetail />
       },
       {
         path: '/caca',
