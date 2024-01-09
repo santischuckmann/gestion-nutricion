@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import { CircularProgress, Typography } from '@mui/material'
 import { useDataFetching } from '../hooks'
 import { PatientDto } from '../shared'
 import { PatientCard } from '../components/Patient/PatientCard'
@@ -12,6 +12,10 @@ export const Patients = () => {
       {patients.data != null && patients.data.map((patient) => (
         <PatientCard patient={patient} key={`allPatients-${patient.patientId}`} />
       ))}
+      {!patients.loading && patients.data == null && (
+        <Typography>Hubo un error al buscar el paciente</Typography>
+      )}
+      {patients.loading && <CircularProgress />}
     </div>
   )
 }

@@ -92,3 +92,7 @@ export interface PatientDto {
    isActive: boolean
    dietaryPlanCount: number
 }
+
+export type DetailedPatientDto = Omit<PatientDto, 'dietaryPlanCount'> & {
+  dietaryPlans: DietaryPlanDto[]
+}

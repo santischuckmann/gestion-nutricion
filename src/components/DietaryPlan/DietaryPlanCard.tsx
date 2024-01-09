@@ -3,7 +3,7 @@ import { DietaryPlanDto, MainCourseType, SnackTime } from '../../shared'
 export const DietaryPlanCard = ({
   dietaryPlan,
   onEdit
-}: { dietaryPlan: DietaryPlanDto, onEdit: (id: number) => void}) => {
+}: { dietaryPlan: DietaryPlanDto, onEdit?: (id: number) => void}) => {
   const snacksBySnackTime = dietaryPlan.planSnacks.reduce<{ [ key: number ]: string }>((acc, value) => {
     acc[value.idSnackTime] = value.food
 
@@ -30,7 +30,9 @@ export const DietaryPlanCard = ({
       <span>Merienda: {snacksBySnackTime[SnackTime.AfternoonSnack]}</span>
       <span>Cena: {mainCourseByMainCourseType[MainCourseType.Dinner].food}</span>
       <span>Postre: {mainCourseByMainCourseType[MainCourseType.Dinner].dessert}</span>
-      <button onClick={() => onEdit(dietaryPlan.dietaryPlanId)}>Editar</button>
+      {onEdit && (
+        <button onClick={() => onEdit(dietaryPlan.dietaryPlanId)}>Editar</button>
+      )}
     </div>
   )
 }

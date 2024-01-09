@@ -17,7 +17,10 @@ export const PatientCard = ({
       <span>
         Ultima consulta: {moment(patient.lastAppointmentDate).format('YYYY-MM-DD')}
       </span>
-      <Button color="primary" onClick={() => navigate(`patient/${patient.patientId}`)}>Ver todos los planes</Button>
+      <span>
+        Cantidad de planes: {patient.dietaryPlanCount}
+      </span>
+      <Button color="primary" onClick={() => navigate(`/patients/${patient.patientId}`)}>Ver todos los planes</Button>
     </div>
   )
 }
