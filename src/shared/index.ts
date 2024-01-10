@@ -23,22 +23,39 @@ interface MainCourseInsertionDto {
   dessert: string
 }
 
+type MainCourseDto = MainCourseInsertionDto & { id: number }
+
 interface PlanSnackInsertionDto {
   food: string
   idSnackTime: SnackTime
 }
 
-export type CreateDietaryPlanInsertionDto = Omit<DietaryPlanDto, 'id'>
+type PlanSnackDto = PlanSnackInsertionDto & { id: number }
+
+
+export type DietaryPlanInsertionDto = Omit<DietaryPlanDto, 'id' | 'mainCourses' | 'planSnacks' | 'patientId'> & {
+  patientId: number | null
+  mainCourses: MainCourseInsertionDto[]
+  planSnacks: PlanSnackInsertionDto[]
+}
 
 export interface DietaryPlanDto extends Record<string, unknown> {
-  patientId: number | null
+  patientId: number
   dietaryPlanId: number
   observations: string
   name: string
   surname: string
   breakfast: string
+  mainCourses: MainCourseDto[]
+  planSnacks: PlanSnackDto[]
+}
+
+export interface DietaryPlanEditionDto extends Record<string, unknown> {
+  dietaryPlanId: number;
+  observations: string;
+  breakfast: string;
   mainCourses: MainCourseInsertionDto[]
-  planSnacks: PlanSnackInsertionDto[]
+  planSnacks: PlanSnackInsertionDto[] 
 }
 
 export type Fields<T extends keyof Record<string, unknown>> = {

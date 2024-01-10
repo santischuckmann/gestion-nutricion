@@ -2,7 +2,7 @@ import { useForm } from '../hooks/useForm'
 import { Box, Button, Typography } from '@mui/material'
 import { useState } from 'react'
 import { useMutate } from '../hooks'
-import { CreateDietaryPlanInsertionDto, SnackTime, MainCourseType, exampleFields, HomeFields, defaultValues } from '../shared'
+import { DietaryPlanInsertionDto, SnackTime, MainCourseType, exampleFields, HomeFields, defaultValues } from '../shared'
 import { DietaryPlanForm } from '../components/DietaryPlan/DietaryPlanForm'
 
 const parseFormToRequest = ({
@@ -10,7 +10,7 @@ const parseFormToRequest = ({
   lunch,
   afternoonSnack,
   ...data
-}: HomeFields): CreateDietaryPlanInsertionDto => {
+}: HomeFields): DietaryPlanInsertionDto => {
 
   const patientFields = data.patientId == 0 ? {
     patientId: null,

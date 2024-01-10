@@ -1,18 +1,18 @@
 import { Modal, Typography } from '@mui/material'
 import { DietaryPlanCard } from '../components/DietaryPlan/DietaryPlanCard'
 import { useDataFetching, useMutate } from '../hooks'
-import { DietaryPlanDto, HomeFields, MainCourseType, SnackTime, defaultValues, exampleFields } from '../shared'
+import { DietaryPlanDto, DietaryPlanEditionDto, HomeFields, MainCourseType, SnackTime, defaultValues, exampleFields } from '../shared'
 import { useState } from 'react'
-import { DietaryPlanForm } from '../components/DietaryPlan/DietaryPlanForm'
 import { useForm } from '../hooks/useForm'
 import { ModalBox } from '../components/ModalBox'
+import { DietaryPlanEditionForm } from '../components/DietaryPlan/DietaryPlanEditionForm'
 
 const parseFormToRequest = ({
   dinner,
   lunch,
   afternoonSnack,
   ...data
-}: HomeFields, id: number): DietaryPlanDto => {
+}: HomeFields, id: number): DietaryPlanEditionDto => {
   return {
     dietaryPlanId: id,
     observations: data.observations || 'Plan sin observaciones',
@@ -40,7 +40,9 @@ const parseDietaryPlanDtoToForm = (dietaryPlanDto: DietaryPlanDto): HomeFields =
   const lunch = getMainCourseByType(dietaryPlanDto, MainCourseType.Lunch)
 
   return {
+    patientId: dietaryPlanDto.patientId,
     name: dietaryPlanDto.name,
+    surname: dietaryPlanDto.surname,
     breakfast: dietaryPlanDto.breakfast,
     afternoonSnack: getSnackByType(dietaryPlanDto, SnackTime.AfternoonSnack).food ?? '',
     dinner: dinner.food,
@@ -48,7 +50,6 @@ const parseDietaryPlanDtoToForm = (dietaryPlanDto: DietaryPlanDto): HomeFields =
     lunch: lunch.food,
     lunchDessert: lunch.dessert,
     observations: dietaryPlanDto.observations,
-    surname: dietaryPlanDto.surname
   }
 }
 
@@ -90,7 +91,7 @@ export const DietaryPlans = () => {
       ))}
       <Modal open={openModal} onClose={() => setOpenModal(false)}>
         <ModalBox className='w-1/2 bg-white rounded-sm'>
-          <DietaryPlanForm 
+          <DietaryPlanEditionForm
             control={control} 
             fields={exampleFields} 
             loading={dietaryPlanBeingEdited.loading}
