@@ -12,7 +12,7 @@ export function TextField <T extends FieldValues> ({ control, ...props }: InputP
       name={props.name as FieldPath<T>}
       control={control}
       render={({ field }) => (
-        <MUITextField {...field} {...props} label={props.label} id={props.name} />
+        <MUITextField {...field} {...props} id={props.name} />
       )} />
   )
 }

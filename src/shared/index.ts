@@ -31,6 +31,7 @@ interface PlanSnackInsertionDto {
 export type CreateDietaryPlanInsertionDto = Omit<DietaryPlanDto, 'id'>
 
 export interface DietaryPlanDto extends Record<string, unknown> {
+  patientId: number | null
   dietaryPlanId: number
   observations: string
   name: string
@@ -43,13 +44,14 @@ export interface DietaryPlanDto extends Record<string, unknown> {
 export type Fields<T extends keyof Record<string, unknown>> = {
   name: T,
   placeholder: string,
-  initialValue: string,
+  defaultValue: string,
   label: string
 }
 
 export type HomeFields = {
   name: string,
   surname: string,
+  patientId: number,
   observations: string,
   breakfast: string,
   lunch: string,
@@ -61,7 +63,8 @@ export type HomeFields = {
 
 export const defaultValues: HomeFields = {
   name: '',
-  surname: '', 
+  surname: '',
+  patientId: 0, 
   observations: '',
   breakfast: '',
   lunch: '',
@@ -72,15 +75,16 @@ export const defaultValues: HomeFields = {
 }
 
 export const exampleFields: Record<keyof HomeFields, Fields<keyof HomeFields>> = {
-  name: { name: 'name', placeholder: 'santiago', initialValue: 'vacio', label: 'Nombre' }, 
-  surname: { name: 'surname', placeholder: 'schuckmann', initialValue: 'vacio', label: 'Apellido' }, 
-  observations: { name: 'observations', placeholder: 'este paciente tiene esto y aquello', initialValue: 'vacio', label: 'Observaciones' }, 
-  breakfast: { name: 'breakfast', placeholder: 'tostadas con mate cocido', initialValue: 'vacio', label: 'Desayuno' }, 
-  lunch: { name: 'lunch', placeholder: 'churrasco con ensalada', initialValue: 'vacio', label: 'Almuerzo' }, 
-  lunchDessert: { name: 'lunchDessert', placeholder: 'helado', initialValue: '', label: 'Postre de almuerzo' }, 
-  afternoonSnack: { name: 'afternoonSnack', placeholder: 'mate cocido con tostadas', initialValue: '', label: 'Merienda' }, 
-  dinner: { name: 'dinner', placeholder: 'empanadas', initialValue: 'vacio', label: 'Cena' }, 
-  dinnerDessert: { name: 'dinnerDessert', placeholder: 'yogurt', initialValue: '', label: 'Postre de cena' }, 
+  name: { name: 'name', placeholder: 'santiago', defaultValue: 'vacio', label: 'Nombre' }, 
+  surname: { name: 'surname', placeholder: 'schuckmann', defaultValue: 'vacio', label: 'Apellido' }, 
+  patientId: { name: 'patientId', placeholder: '1', defaultValue: '0', label: 'Paciente' }, 
+  observations: { name: 'observations', placeholder: 'este paciente tiene esto y aquello', defaultValue: 'vacio', label: 'Observaciones' }, 
+  breakfast: { name: 'breakfast', placeholder: 'tostadas con mate cocido', defaultValue: 'vacio', label: 'Desayuno' }, 
+  lunch: { name: 'lunch', placeholder: 'churrasco con ensalada', defaultValue: 'vacio', label: 'Almuerzo' }, 
+  lunchDessert: { name: 'lunchDessert', placeholder: 'helado', defaultValue: '', label: 'Postre de almuerzo' }, 
+  afternoonSnack: { name: 'afternoonSnack', placeholder: 'mate cocido con tostadas', defaultValue: '', label: 'Merienda' }, 
+  dinner: { name: 'dinner', placeholder: 'empanadas', defaultValue: 'vacio', label: 'Cena' }, 
+  dinnerDessert: { name: 'dinnerDessert', placeholder: 'yogurt', defaultValue: '', label: 'Postre de cena' }, 
 }
 
 export interface PatientDto {
@@ -95,4 +99,9 @@ export interface PatientDto {
 
 export type DetailedPatientDto = Omit<PatientDto, 'dietaryPlanCount'> & {
   dietaryPlans: DietaryPlanDto[]
+}
+
+export type Option = {
+  id: number | string
+  description: string
 }

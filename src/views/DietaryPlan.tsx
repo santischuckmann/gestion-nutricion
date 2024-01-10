@@ -11,14 +11,24 @@ const parseFormToRequest = ({
   afternoonSnack,
   ...data
 }: HomeFields): CreateDietaryPlanInsertionDto => {
-  return {
-    observations: data.observations || 'Plan sin observaciones',
+
+  const patientFields = data.patientId == 0 ? {
+    patientId: null,
     name: data.name,
-    breakfast: data.breakfast,
     surname: data.surname,
+  } : {
+    patientId: data.patientId,
+    name: '',
+    surname: ''
+  }
+
+  return {
+    ...patientFields,
+    observations: data.observations || 'Plan sin observaciones',
+    breakfast: data.breakfast,
     planSnacks: [ {
       food: afternoonSnack,
-      idSnackTime: SnackTime.BreakfastAndLunch
+      idSnackTime: SnackTime.AfternoonSnack
     } ],
     mainCourses: [ {
       idMainCourseType: MainCourseType.Lunch,
@@ -63,6 +73,7 @@ export const DietaryPlan = () => {
           control={control}
           fields={exampleFields}
           onSubmit={handleSubmit(onSubmit)}
+          watch={watch}
           loading={createDietaryPlan.loading}
           confirmActionText='Enviar' />
       ): (
