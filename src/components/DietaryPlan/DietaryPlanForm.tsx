@@ -1,10 +1,11 @@
 import { Box, Button, CircularProgress, MenuItem, Select as MUISelect, Typography } from '@mui/material'
 import { TextField } from '../TextField'
 import { Control, UseFormWatch } from 'react-hook-form'
-import { Fields, HomeFields, Option, PatientDto } from '../../shared'
+import { Fields, HomeFields, Option, PatientDto, SnackTime } from '../../shared'
 import { useDataFetching } from '../../hooks'
 import { Select } from '../Select'
 import { useMemo } from 'react'
+import { WriteableSelect } from '../WriteableSelect'
 
 interface DietaryPlanFormProps {
   control: Control<HomeFields, any>
@@ -24,6 +25,7 @@ export const DietaryPlanForm = ({
   onSubmit
 }: DietaryPlanFormProps) => {
   const patients = useDataFetching<PatientDto[]>('Patient')
+  const snacks = useDataFetching<string[]>(`Snack?snackTimeId=${SnackTime.AfternoonSnack}`)
 
   const patientsOptions: Option[] = useMemo(() => {
     const options = patients.data?.map(patient => ( { id: patient.patientId, description: `${patient.name} ${patient.surname}` }))
@@ -59,7 +61,9 @@ export const DietaryPlanForm = ({
           <TextField control={control} {...fields.lunchDessert} InputLabelProps={{ shrink: true }} />
         </Box>
       </Box>
-      <TextField control={control} {...fields.afternoonSnack} />
+      {!snacks.loading && (
+        <WriteableSelect control={control} {...fields.afternoonSnack} options={snacks.data ?? []} />
+      )}
       <Box className='flex flex-col gap-2'>
         <Typography>Cena:</Typography>
         <Box className='flex gap-2'>

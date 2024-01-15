@@ -40,9 +40,11 @@ export const useMutate = <T>() => {
       const response = await request({ method, endpoint, data })
       setData(response)
     } catch (err) {
+      console.log('err')
       setError(true)
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }, [])
 
   return { mutate, data, loading, error }

@@ -15,21 +15,17 @@ export const request = async<T extends Method | undefined>({
   method = 'get',
   data
 }: Request<T>) => {
-  try {
-    const config: AxiosRequestConfig = {
-      method,
-      headers: {
-        'Content-type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      },
-    }
-  
-    if (method !== 'get') config.data = data
-  
-    const response = await axiosInstance(endpoint, config)
-  
-    return response.data
-  } catch (error){
-    return undefined
+  const config: AxiosRequestConfig = {
+    method,
+    headers: {
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    },
   }
+  
+  if (method !== 'get') config.data = data
+  
+  const response = await axiosInstance(endpoint, config)
+  
+  return response.data
 }

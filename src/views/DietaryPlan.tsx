@@ -11,7 +11,6 @@ const parseFormToRequest = ({
   afternoonSnack,
   ...data
 }: HomeFields): DietaryPlanInsertionDto => {
-
   const patientFields = data.patientId == 0 ? {
     patientId: null,
     name: data.name,
@@ -51,10 +50,12 @@ export const DietaryPlan = () => {
 
   const onSubmit = async (data: HomeFields) => {
     await createDietaryPlan.mutate({ 
-      endpoint: 'DietaryPlan', 
+      endpoint: 'DietaryPlant', 
       method: 'POST',
       data: parseFormToRequest(data) 
     })
+
+    console.log({ createDietaryPlan })
 
     if (!createDietaryPlan.error)
       setJustCreated(true)
@@ -68,7 +69,7 @@ export const DietaryPlan = () => {
   return (
     <div className="flex flex-col gap-2 p-4 items-center">
       <Typography variant='h4'>Crea un plan diario para tu paciente</Typography>
-      {!justCreated ? (
+      {!justCreated && !createDietaryPlan.error ? (
         <DietaryPlanForm
           control={control}
           fields={exampleFields}
@@ -84,10 +85,10 @@ export const DietaryPlan = () => {
               <Typography>Queres crear otro?</Typography>
             </>
           )}
-          {!justCreated && createDietaryPlan.error && (
+          {createDietaryPlan.error && (
             <>
               <Typography>Hubo un error al crear un plan nutricional para {watch('name')} {watch('surname')}</Typography>
-              <Typography>Queres intentar de nuevo?</Typography>
+              <Typography>Quieres intentar de nuevo?</Typography>
             </>
           )}
           <Button variant='outlined' onClick={handleRestart}>Creemos otro</Button>
